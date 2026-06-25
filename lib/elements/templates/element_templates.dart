@@ -1,0 +1,128 @@
+import '../models/builder_models.dart';
+
+const List<ComponentTemplate> elementTemplates = [
+  ComponentTemplate(
+    type: ComponentType.button,
+    label: 'Button',
+    icon: '🔘',
+    description: 'Tugma elementi',
+    category: 'Tugmalar',
+    defaultProperties: {
+      'text': 'Tugma',
+      'bgColor': '#3b82f6',
+      'textColor': '#ffffff',
+      'fontSize': '16',
+      'borderRadius': '12',
+      'width': '200',
+      'fontWeight': 'semibold',
+      'paddingH': '16',
+      'paddingV': '14',
+    },
+    editableProperties: [],
+  ),
+  ComponentTemplate(
+    type: ComponentType.input,
+    label: 'Input',
+    icon: '📝',
+    description: 'Matn kiritish maydoni',
+    category: 'Matnlar',
+    defaultProperties: {
+      'placeholder': 'Matn kiriting...',
+      'borderColor': '#d1d5db',
+      'borderRadius': '12',
+      'fontSize': '16',
+      'width': '200',
+      'bgColor': '#ffffff',
+    },
+    editableProperties: [],
+  ),
+  ComponentTemplate(
+    type: ComponentType.text,
+    label: 'Text',
+    icon: '📄',
+    description: 'Matn bloki',
+    category: 'Matnlar',
+    defaultProperties: {
+      'text': 'Salom, dunyo!',
+      'textColor': '#111827',
+      'fontSize': '16',
+      'fontWeight': 'normal',
+      'alignment': 'left',
+    },
+    editableProperties: [],
+  ),
+  ComponentTemplate(
+    type: ComponentType.card,
+    label: 'Card',
+    icon: '🃏',
+    description: 'Karta konteyner',
+    category: 'Dizayn',
+    defaultProperties: {
+      'title': 'Karta sarlavhasi',
+      'description': 'Bu yerda tavsif yozing',
+      'bgColor': '#ffffff',
+      'borderRadius': '16',
+      'paddingAll': '16',
+      'shadow': 'medium',
+    },
+    editableProperties: [],
+  ),
+  ComponentTemplate(
+    type: ComponentType.image,
+    label: 'Image',
+    icon: '🖼️',
+    description: 'Rasm elementi',
+    category: 'Dizayn',
+    defaultProperties: {
+      'src': '',
+      'alt': 'Rasm tavsifi',
+      'borderRadius': '12',
+      'width': '200',
+      'fit': 'cover',
+    },
+    editableProperties: [],
+  ),
+  ComponentTemplate(
+    type: ComponentType.divider,
+    label: 'Divider',
+    icon: '➖',
+    description: 'Ajratuvchi chiziq',
+    category: 'Dizayn',
+    defaultProperties: {'color': '#e5e7eb', 'height': '1', 'marginV': '12'},
+    editableProperties: [],
+  ),
+  ComponentTemplate(
+    type: ComponentType.toggle,
+    label: 'Toggle',
+    icon: '🔄',
+    description: "Yoqish/O'chirish tugmasi",
+    category: 'Tugmalar',
+    defaultProperties: {
+      'label': 'Bildirishnomalar',
+      'activeColor': '#3b82f6',
+      'defaultState': 'on',
+    },
+    editableProperties: [],
+  ),
+  ComponentTemplate(
+    type: ComponentType.searchBar,
+    label: 'Search Bar',
+    icon: '🔍',
+    description: 'Qidiruv paneli bloki',
+    category: 'Tayyor bloklar',
+    defaultProperties: {
+      'placeholder': 'Qidirish...',
+      'bgColor': '#f3f4f6',
+      'width': '300',
+      'height': '46',
+    },
+    editableProperties: [],
+  ),
+];
+
+ComponentTemplate getTemplateByType(ComponentType type) {
+  return elementTemplates.firstWhere(
+    (t) => t.type == type,
+    orElse: () => throw Exception('Unknown component type: $type'),
+  );
+}
