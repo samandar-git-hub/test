@@ -1,0 +1,72 @@
+name: Dynamic Flutter APK Build
+
+on:
+  workflow_dispatch:
+    inputs:
+      project_url:
+        description: 'Loyiha ZIP faylining vaqtinchalik URL manzili'
+        required: true
+        type: string
+      build_id:
+        description: 'Tizimdagi Build ID'
+        required: true
+        type: string
+      callback_url:
+        description: 'APK tayyor bo''lganda xabar yuborish uchun API manzili'
+        required: true
+        type: string
+
+jobs:
+  build-apk:
+    runs-on: ubuntu-latest
+
+    steps:
+      # 1. GitHub repozitoriyasini ochish (workflow scriptlari uchun)
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      # 2. Java muhitini sozlash
+      - name: Set up Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'zulu'
+          java-version: '17'
+
+      # 3. Flutter-ni o'rnatish
+      - name: Set up Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          channel: 'stable'
+
+      # 4. Foydalanuvchi loyihasi ZIP-ni ochish
+      - name: Unzip user project
+        run: |
+          unzip -o temp/project.zip -d user_project
+          
+      # 5. Flutter kutubxonalarini yuklash
+      - name: Install dependencies
+        run: |
+          cd user_project
+          flutter pub get
+
+      # 6. APK build qilish
+      - name: Build APK
+        run: |
+          cd user_project
+          flutter build apk --release
+
+      # 7. APK faylini GitHub artifact sifatida yuklash (Client-side yuklab olish uchun)
+      - name: Upload APK artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: app-release-apk
+          path: user_project/build/app/outputs/flutter-apk/app-release.apk
+
+      # 8. APK faylini sizning backend serveringizga yuborish (Callback - ixtiyoriy)
+      - name: Upload APK to Backend (Optional)
+        if: ${{ github.event.inputs.callback_url != '' }}
+        run: |
+          curl -X POST -F "file=@user_project/build/app/outputs/flutter-apk/app-release.apk" \
+               -F "build_id=${{ github.event.inputs.build_id }}" \
+               "${{ github.event.inputs.callback_url }}"
+
