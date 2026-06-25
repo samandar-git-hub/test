@@ -65,7 +65,8 @@ jobs:
 
       # 8. APK faylini sizning backend serveringizga yuborish (Callback - ixtiyoriy)
       - name: Upload APK to Backend (Optional)
-        if: ${{ github.event.inputs.callback_url != '' }}
+        if: ${{ github.event.inputs.callback_url != '' && github.event.inputs.callback_url != 'none' }}
+        continue-on-error: true
         run: |
           curl -X POST -F "file=@user_project/build/app/outputs/flutter-apk/app-release.apk" \
                -F "build_id=${{ github.event.inputs.build_id }}" \
