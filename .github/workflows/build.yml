@@ -38,9 +38,10 @@ jobs:
         with:
           channel: 'stable'
 
-      # 4. Foydalanuvchi loyihasi ZIP-ni ochish
-      - name: Unzip user project
+      # 4. Foydalanuvchi loyihasi platformalarini yaratish va ZIP-ni ochish
+      - name: Initialize Android platform and unzip user project
         run: |
+          flutter create --platforms=android user_project
           unzip -o temp/project.zip -d user_project
           
       # 5. Flutter kutubxonalarini yuklash
